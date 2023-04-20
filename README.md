@@ -21,7 +21,7 @@ There are eight options when running the tool.
 
 #### Onboard
 ```
-python BARDA_Management.py onboard
+python ChallengeManagement.py onboard
 ```
 When you run this command, this will gather two lists of people, (1) those who have fulfilled all the requirements and are ready to be onboarded, and (2) those who have requested access but have outstanding requirements. The `Validation Reason` column shows the outstanding requirements.
 
@@ -31,25 +31,47 @@ For the `Requested and Not Validated` participants, use the Email command to gen
 
 #### Email
 ```
-python BARDA_Management.py email
+python ChallengeManagement.py email
 ```
 This will generate two emails that you can send to participants. One email will be sent to those who are registered in Synapse, but who haven't registered a team yet. The second email will be for participants who are not registered through Synapse, or who haven't made their first and last name in their Synapse profile match their N3C account.
 
 #### Registered
+```
+python ChallengeManagement.py registered
+```
 This will show a full list of all the registered participants.
 
 #### Status
+```
+python ChallengeManagement.py onboard
+```
 This will show a summary of the challenge (number of teams, number of participants, etc.) as well as build a file of all participants and their affiliated institutions.
 
 #### Emails
+```
+python ChallengeManagement.py emails
+```
+show onboarded participants' email addresses
 
 #### Active
+```
+python ChallengeManagement.py active
+```
+show fully onboarded participants
 
 #### Outstanding
+```
+python ChallengeManagement.py outstanding
+```
+show who has registered through Synapse but not requested access in the external platform
 
 #### Teams
+```
+python ChallengeManagement.py teams
+```
 
-#### COI
-
-
-'status','active', 'emails', 'outstanding', 'coi', 'teams'
+#### Report
+```
+python ChallengeManagement.py report
+```
+gather the current list of participants and their institutions

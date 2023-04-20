@@ -13,10 +13,12 @@ from src.participants import get_participant_status, getRequestedandNotValidated
 pd.set_option('display.max_rows', 500)
 
 
-## Challenge Management Class
 class ChallengeManagement:
+    """
+    Creates a ChallengeManagement object used coordinate between a challenge on Synapse
+    and an external platform where the bulk of the challenge will occur.
+    """
     def __init__(self):
-        
         ## collect configurations
         config_file = open('config.json', 'r')
         self.configs = json.load(config_file)
@@ -27,12 +29,14 @@ class ChallengeManagement:
 
         username = self.configs['username']
         password = self.configs['password']
-        
-        self.syn.login(username, password, silent=True)
+        try:
+            self.syn.login(username, password, silent=True)
+        except synapseclient.core.exceptions.SynapseAuthenticationError:
+            raise Exception("Unable to login to Synapse. Please check the config.json file.")
 
         ## collect challenge information
-        self.CHALLENGEID = self.configs['challengeid'] #'4474'
-        self.PROJECTID = self.configs['projectid'] #syn25875374
+        self.CHALLENGEID = self.configs['challengeid']
+        self.PROJECTID = self.configs['projectid']
 
         self.chalutils = ChallengeApi(self.syn)
 
@@ -102,13 +106,11 @@ class ChallengeManagement:
     def getAccessRequests(self):
         accessRequests = pd.read_csv("AccessRequests.csv")
 
-        accessRequests["N3C Access Requested"] = 'yes'
+        accessRequests["External Platform Access Requested"] = 'yes'
         
         return accessRequests
 
-    
     def getAllRegistrationInformation(self):
-
         REQUESTS = self.getAccessRequests()
 
         REGISTRANTS = self.getRegisteredParticpants()
@@ -124,7 +126,7 @@ class ChallengeManagement:
 
         ALL = REGISTRANTS.merge(REQUESTS, on=["First Name", "Last Name"], how="outer")
 
-        ALL[["Synapse Registered", "N3C Access Requested", "N3C Approved"]] = ALL[["Synapse Registered", "N3C Access Requested", "N3C Approved"]].fillna("no")
+        ALL[["Synapse Registered", "External Platform Access Requested", "External Platform Approved"]] = ALL[["Synapse Registered", "External Platform Access Requested", "External Platform Approved"]].fillna("no")
         
         ALL[["username", "userId", "Team", "TeamID", "Email", "Accessing Institution"]] = ALL[["username", "userId", "Team", "TeamID", "Email", "Accessing Institution"]].fillna("")
         
@@ -234,7 +236,8 @@ if __name__ == "__main__":
             \n\temails:    \tshow onboarded participants' email addresses \
             \n\toutstanding:\tshow who has registered through Synapse but not requested access in the external platform \
             \n\tactive:    \tshow fully onboarded participants \
-            \n\treport:       \tgather the current list of participants and their institutions")
+            \n\treport:     \tgather the current list of participants and their institutions \
+            \n\tteams:     \tgenerate a list of teams who have been onboarded into the challenge")
     
     args = parser.parse_args()
     
