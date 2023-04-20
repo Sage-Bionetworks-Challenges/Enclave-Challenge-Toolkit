@@ -4,6 +4,12 @@ A suite of tools to manage challenges that are run external to Synapse but still
 ## Overview
 This toolkit is designed to help challenge organizers manage challenges that are taking place on a platform external to Synapse (e.g. N3C, All of Us) while still using some of the features of Synapse for challenge management. 
 
+### Examples of Previous External Challenges
+- [Pediatric COVID-19 Data Challenge](https://www.synapse.org/peds_covid_severity)
+- [NIH Long COVID Computational Challenge](https://www.synapse.org/l3c)
+
+### Toolkit Assumptions
+
 This toolkit assumes that:
 
 1. Challenge registration is taking place on Synapse.
