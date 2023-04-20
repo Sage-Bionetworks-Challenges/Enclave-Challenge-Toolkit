@@ -1,2 +1,3 @@
 reports/*
 AccessReports_copy.csv
+src/__pycache__/*

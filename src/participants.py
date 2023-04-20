@@ -63,7 +63,7 @@ def get_participant_status(status, registrationInformation):
         info = getRegisteredAndRequested(registrationInformation)
 
 
-    elif status == 'N3C Requested':
+    elif status == 'External Platform Requested':
         info = getRequested(registrationInformation)
 
     
