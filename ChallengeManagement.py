@@ -144,37 +144,20 @@ class ChallengeManagement:
 
     def create_COI_document(self):
         info = self.getAllRegistrationInformation()
-        submitted_teams = pd.read_csv("Submitting_Teams.csv")
-
+        
         active = info[info["Onboarded"]==True]
         active = active[['First Name', 'Last Name', 'Team', 'Accessing Institution']].sort_values("Accessing Institution").drop_duplicates()
 
-        def blank_map(row):
-            blank_team_map = {
-                "sanjoy dey":"Long COVID IBM",
-                "zach pryor":"Kalman L3C Team",
-                "saarthak kapse":"SBU BMI",
-                "kai zhang":"UTHealth SBMI",
-                "jiehuan sun":"sunny_J_team",
-                "ciara crosby":"LongCOVIDLearning",
-            }
-            try:
-                return blank_team_map[f"{row['First Name']} {row['Last Name']}"]
-            except KeyError:
-                return ""
-        
-        blank = active[active["Team"]==""]
-        blank["Team"] = blank.apply(lambda r: blank_map(r), axis=1)
-        blank = blank[blank["Team"]!=""]
 
-        final_list = pd.concat([active.merge(submitted_teams, on="Team",how="inner"),blank]).sort_values(["Team","Accessing Institution"])
-        final_list = final_list[["Team","Accessing Institution"]].drop_duplicates()
-        final_list['Combined Accessing Institution'] = final_list[["Team","Accessing Institution"]].groupby("Team")['Accessing Institution'].transform(lambda x: ';'.join(x))
-        final_list = final_list[['Team', 'Combined Accessing Institution']].drop_duplicates()
-        final_list.to_csv("Team_Institution_List.csv",sep=",",index=False)
-        print (final_list)
-        exit()
-        final_list.to_csv("Participant_Institution_COI_List.csv", sep=",")
+        ## If only the submitting teams are being reported, create a csv file with a list of Submitting Teams
+        try:
+            submitted_teams = pd.read_csv("reports/Submitting_Teams.csv")
+            final_list = active.merge(submitted_teams, on="Team",how="inner").sort_values(["Team","Accessing Institution"])
+        
+        except FileNotFoundError:
+            final_list = active
+        
+        final_list.to_csv("reports/Participant_Institution_COI_List.csv", sep=",")
         print (final_list)
 
 
