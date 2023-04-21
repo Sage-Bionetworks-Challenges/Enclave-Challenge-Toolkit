@@ -1,32 +1,20 @@
 
 ## Check if a participant is registered with the challenge in synapse
 def checkIsRegistered(user):
-    if user["Synapse Registered"] == 'yes':
-        return True
-    else:
-        return False
+    return user["Synapse Registered"] == 'yes'
 
 # Check if Organizers have approved access to the external platform
 def checkIsApproved(user):
-    if user["External Platform Approved"] == 'yes':
-        return True
-    else:
-        return False
+    return user["External Platform Approved"] == 'yes'
 
 # Check if a participant has requested access to the external platform
 def checkIsRequested(user):
-    if user["External Platform Access Requested"] == 'yes':
-        return True
-    else:
-        return False
+    return user["External Platform Access Requested"] == 'yes'
 
 # Check if registered participants are on a 
 # Team that is registered for the challenge
 def checkIsOnTeam(user):
-    if user["TeamID"] != "":
-        return True
-    else:
-        return False
+    return user["TeamID"] != ""
 
 
 def validateRow(user):
